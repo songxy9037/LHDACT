@@ -16,14 +16,7 @@ class LHDACT(nn.Module):
     """
     Resnet of 8 downsampling + BIT + bitemporal feature Differencing + a small CNN
     """
-    def __init__(self, input_nc=3, output_nc=2, with_pos='learned',
-                 token_len=8, token_trans=True,
-                 enc_depth=1, dec_depth=8,
-                 dim_head=64, decoder_dim_head=64,
-                 tokenizer=True,
-                 pool_mode='max', pool_size=2,
-                 decoder_softmax=True, with_decoder_pos=None,
-                 with_decoder=True,output_sigmoid=False ):
+    def __init__(self, output_nc=2):
         super(LHDACT, self).__init__()
         self.Transformer = Transformer(token_len=4, decdepth=4, in_channel=64)
         self.feature_ex = LHDACTbone()
@@ -38,7 +31,6 @@ class LHDACT(nn.Module):
                                     nn.ReLU(),
                                     nn.Conv2d(32,32,3,1,1),
                                     nn.BatchNorm2d(32))
-        self.output_sigmoid = output_sigmoid
         self.sigmoid = nn.Sigmoid()
         self.upsamplex4 = nn.Upsample(scale_factor=4, mode='bilinear')
         self.classifier = TwoLayerConv2d(in_channels=64, out_channels=output_nc)
@@ -61,8 +53,6 @@ class LHDACT(nn.Module):
         x = self.classifier(x)
         if self.output_sigmoid:
             x = self.sigmoid(x)
-
-
         outputs.append(x)
         return outputs
 
