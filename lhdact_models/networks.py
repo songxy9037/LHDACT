@@ -12,7 +12,7 @@ from models.help_funcs import Transformer, TransformerDecoder, TwoLayerConv2d
 # from models.ps_vit import ps_vit
 from cc_attention.functions import CrissCrossAttention
 from mixformer.mixformer import Block
-from models.LHDACT import LHDACT
+from lhdact_models.LHDACT import LHDACT
 ###############################################################################
 # Helper Functions
 ###############################################################################
